@@ -50,7 +50,6 @@ class JSH:
         is what is called by external files
         """
         #TODO: add support for "" and ''
-        #TODO: add support for the syscall commands like cd
         pieces = cmd.split()
         execute = self._searchPath(pieces[0])
 
@@ -64,4 +63,7 @@ class JSH:
                 cpid,s = os.wait()
                 self._PrintDeadChild(cpid, s)
         else:
-            print("unknwon command please try again")
+            if("cd" == pieces[0]):
+                os.chdir(pieces[1])
+            else:
+                print("unknwon command please try again")
