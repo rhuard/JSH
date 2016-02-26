@@ -1,6 +1,6 @@
 import os
 import shutil
-from jshutil import Prompt
+from Conf import Prompt
 
 class JSH:
 
