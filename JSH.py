@@ -1,6 +1,6 @@
 import os
 import shutil
-import jshutil
+from jshutil import Prompt
 
 class JSH:
 
@@ -9,7 +9,12 @@ class JSH:
         Read in configuration file and configure jsh options
         """
         #TODO: implement the .jshrc file
-        pass
+        #dictonary to keep track of jshenv. Stored in .jshrc
+        self.var = {
+                "dead child" : False
+                }
+
+        self.prompt = Prompt.JSHPrompt("%t>")
 
     def _run_child(self, cmd, args):
         """
@@ -33,6 +38,12 @@ class JSH:
         """
         return shutil.which(cmd)
 
+    def _PrintDeadChild(self, cpid, s):
+        if(self.var["dead child"]):
+            print("child died :(    " + str(cpid) + " status: " + str(s))
+        else:
+            pass
+
     def Process(self, cmd):
         """
         Highest level of processing the command. This
@@ -49,6 +60,6 @@ class JSH:
                 self._run_child(execute, pieces[0:])
             else:
                 cpid,s = os.wait()
-                print("child died :(    " + str(cpid) + " status: " + str(s))
+                self._PrintDeadChild(cpid, s)
         else:
             print("unknwon command please try again")

@@ -8,11 +8,15 @@ def main():
     jsh = JSH.JSH()
 
     while(True):
-        print(">", end=" ")
+        jsh.prompt.PrintPrompt()
         cmd = input()
 
         if("exit" == cmd):
             exit()
+        elif("" == cmd):
+            pass
+        elif(cmd.isspace()):
+            pass
         else:
             jsh.Process(cmd)
 
