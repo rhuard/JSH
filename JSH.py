@@ -57,14 +57,21 @@ class JSH:
         if(None != execute):
 
             newpid = os.fork()
-
+            plen = len(pieces)
             if(0 == newpid):
-                self._run_child(execute, pieces[0:])
+                if pieces[plen-1] == '&':
+                    self._run_child(execute, pieces[0:plen-1]) # exclude the '&' to execute correctly
+                else:
+                    self._run_child(execute, pieces[0:])
             else:
-                cpid,s = os.wait()
-                self._PrintDeadChild(cpid, s)
+                if pieces[len(pieces)-1] != '&':
+                    cpid,s = os.wait()
+                    self._PrintDeadChild(cpid, s)
         else:
             if("cd" == pieces[0]):
-                os.chdir(pieces[1])
+                if len(pieces) > 1:
+                    os.chdir(pieces[1])
+                else:
+                    os.chdir('/')
             else:
-                print("unknwon command please try again")
+                print("unknown command please try again")
