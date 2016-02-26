@@ -50,6 +50,7 @@ class JSH:
         is what is called by external files
         """
         #TODO: add support for "" and ''
+        #TODO: add support for the syscall commands like cd
         pieces = cmd.split()
         execute = self._searchPath(pieces[0])
 
