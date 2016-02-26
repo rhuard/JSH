@@ -49,6 +49,7 @@ class JSH:
         Highest level of processing the command. This
         is what is called by external files
         """
+        #TODO: add support for "" and ''
         pieces = cmd.split()
         execute = self._searchPath(pieces[0])
 
