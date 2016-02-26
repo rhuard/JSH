@@ -1,6 +1,7 @@
 import os
 import shutil
 from Conf import Prompt
+from JSHUtil import Input
 
 class JSH:
 
@@ -15,6 +16,7 @@ class JSH:
                 }
 
         self.prompt = Prompt.JSHPrompt("%t>")
+        self._ih = Input.InputHandler()
 
     def _run_child(self, cmd, args):
         """
@@ -49,8 +51,7 @@ class JSH:
         Highest level of processing the command. This
         is what is called by external files
         """
-        #TODO: add support for "" and ''
-        pieces = cmd.split()
+        pieces = self._ih.Process(cmd)
         execute = self._searchPath(pieces[0])
 
         if(None != execute):
