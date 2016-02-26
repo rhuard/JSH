@@ -5,18 +5,24 @@ def child(cmd, args):
 
 def main():
 
-    print(">", end=" ")
-    cmd = input()
-    pieces = cmd.split()
+    while(True):
+        print(">", end=" ")
+        cmd = input()
 
-    newpid = os.fork()
+        if("exit" == cmd):
+            exit()
+        else:
 
-    if(0 == newpid):
-        
-        child(pieces[0], pieces[0:])
-    else:
-        cpid,s = os.wait()
-        print("child died :( " + str(cpid) + " status: " + str(s))
+            pieces = cmd.split()
+
+            newpid = os.fork()
+
+            if(0 == newpid):
+            
+                child(pieces[0], pieces[0:])
+            else:
+                cpid,s = os.wait()
+                print("child died :( " + str(cpid) + " status: " + str(s))
 
 
 if __name__ == "__main__":
