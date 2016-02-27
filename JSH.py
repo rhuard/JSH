@@ -15,7 +15,7 @@ class JSH:
                 "dead child" : False
                 }
 
-        self.prompt = Prompt.JSHPrompt("%t>")
+        self._prompt = Prompt.JSHPrompt("%t>")
         self._ih = Input.InputHandler()
 
     def _run_child(self, cmd, args):
@@ -46,7 +46,7 @@ class JSH:
         else:
             pass
 
-    def Process(self, cmd):
+    def _Process(self, cmd):
         """
         Highest level of processing the command. This
         is what is called by external files
@@ -75,3 +75,20 @@ class JSH:
                     os.chdir('/')
             else:
                 print("unknown command please try again")
+
+
+
+
+    def Run(self):
+        while(True):
+            self._prompt.PrintPrompt()
+            cmd = input()
+
+            if("exit" == cmd):
+                exit()
+            elif("" == cmd):
+                pass
+            elif(cmd.isspace()):
+                pass
+            else:
+                self._Process(cmd)
