@@ -26,21 +26,21 @@ class Configurer:
             with open(rc, "r") as rcfile:
                 for line in rcfile:
                     #first get rid of the comments
-                    #import pdb; pdb.set_trace()
                     comment = line.find("#")
-                    if(comment != -1):
-                        line = line[:comment]
-                    pieces = line.split("=");
-                    if(pieces==[""] or pieces==["\n"]):
-                        continue
+                    #find the comments in the line
+                    if(comment != -1): #if there were comments
+                        line = line[:comment] #slice out the line
+                    pieces = line.split("="); #get the vars and variables
+                    if(pieces==[""] or pieces==["\n"]):#make sure the pieces ...
+                        continue #... are not just a new line or the empty string
 
                     for i in range(len(pieces)):
                         pieces[i] = pieces[i].strip() #shave whitespace
 
-                    self._AddVar(pieces[0], pieces[1])
+                    self._AddVar(pieces[0], pieces[1])#add the var to the dictonary
 
         except:
             #could not find the ~/.jshrc file
-            print("error in configuration")
+            print("error in configuration: .jshrc was not found")
 
         return self._conf
