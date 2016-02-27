@@ -36,7 +36,9 @@ class Configurer:
 
                     for i in range(len(pieces)):
                         pieces[i] = pieces[i].strip() #shave whitespace
-                        pieces[i] = pieces[i].encode().decode('unicode_escape')
+                        pieces[i] = pieces[i].encode().decode('unicode_escape') #strip off the first \ that is put
+                                            #on escaped chars when they are read in. Example when a litteral \n is
+                                            #in the .jshrc it will be read in as \\n. This turns it back to \n
 
                     self._AddVar(pieces[0], pieces[1])#add the var to the dictonary
 
