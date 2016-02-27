@@ -2,6 +2,7 @@ import os
 import shutil
 from Conf import Prompt
 from JSHUtil import Input
+from Conf import Configure as config
 
 class JSH:
 
@@ -11,11 +12,10 @@ class JSH:
         """
         #TODO: implement the .jshrc file
         #dictonary to keep track of jshenv. Stored in .jshrc
-        self.var = {
-                "dead child" : False
-                }
+        conf = config.Configurer()
+        self.var = conf.configure() 
 
-        self._prompt = Prompt.JSHPrompt("%t>")
+        self._prompt = Prompt.JSHPrompt(self.var["prompt"])
         self._ih = Input.InputHandler()
 
     def _run_child(self, cmd, args):
@@ -41,7 +41,7 @@ class JSH:
         return shutil.which(cmd)
 
     def _PrintDeadChild(self, cpid, s):
-        if(self.var["dead child"]):
+        if( "True" == self.var["dead child"]):
             print("child died :(    " + str(cpid) + " status: " + str(s))
         else:
             pass
