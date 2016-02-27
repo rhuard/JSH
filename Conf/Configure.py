@@ -6,12 +6,17 @@ class Configurer:
     JSH accordingly.
     """
     def __init__(self):
-        self.conf={
+        self._conf={
             "dead child" : False,
             "prompt" : ""
         }
+    def _AddVar(self, var, value):
+        if var in self._conf:
+            self._conf[var] = value
+        else:
+            print("error with jshrc unknown setting: " + str(var))
 
-    def configure(self):
+    def Configure(self):
         """
         called on startup of JSH, can also be called when the file has been
         changed to update configuration
@@ -30,13 +35,12 @@ class Configurer:
                         continue
 
                     for i in range(len(pieces)):
-                        #import pdb; pdb.set_trace()
                         pieces[i] = pieces[i].strip() #shave whitespace
 
-                    self.conf[pieces[0]] = pieces[1]
+                    self._AddVar(pieces[0], pieces[1])
 
         except:
             #could not find the ~/.jshrc file
             print("error in configuration")
 
-        return self.conf
+        return self._conf
