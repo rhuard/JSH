@@ -14,7 +14,6 @@ class JSH:
         #dictonary to keep track of jshenv. Stored in .jshrc
         conf = config.Configurer()
         self.var = conf.Configure() 
-
         self._prompt = Prompt.JSHPrompt(self.var["prompt"])
         self._ih = Input.InputHandler()
 

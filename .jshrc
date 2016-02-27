@@ -1,5 +1,5 @@
 #this is the configuration file for JSH
 #comments are made with the '#'
 
-prompt = %t> #set the prompt
+prompt = \t%PWD\n%t\a> #set the prompt
 dead child=False #set print statement for displaying dead child pid

@@ -34,7 +34,7 @@ class JSHPrompt:
         with the wd in place of the %PWD
         """
         index = prompt.find("%PWD")
-        if(index != 1):
+        if(index != -1):
             p = prompt.replace("%PWD", os.getcwd())
         else:
             p = prompt

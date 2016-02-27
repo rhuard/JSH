@@ -36,6 +36,7 @@ class Configurer:
 
                     for i in range(len(pieces)):
                         pieces[i] = pieces[i].strip() #shave whitespace
+                        pieces[i] = pieces[i].encode().decode('unicode_escape')
 
                     self._AddVar(pieces[0], pieces[1])#add the var to the dictonary
 
