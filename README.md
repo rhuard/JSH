@@ -15,6 +15,7 @@ Right now it is in the inital stages but future plans for shenanigans include:
 * correcting spelling when spelling is correct
 
 # How to Use
+* You will need at least Python 3.3
 * clone repo and run main.py
 
 #How to Configure
