@@ -2,4 +2,4 @@
 #comments are made with the '#'
 
 prompt = %t>%s#set the prompt
-dead child=False #set print statement for displaying dead child pid
+dead child=False #set print statement for displaying dead child pid will need to litterally be True to work
