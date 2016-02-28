@@ -22,7 +22,7 @@ class Configurer:
         changed to update configuration
         """
         try:
-            rc = os.environ["HOME"] + "/.jshrc" 
+            rc = os.environ["HOME"] + "/.jshrc"
             with open(rc, "r") as rcfile:
                 for line in rcfile:
                     #first get rid of the comments

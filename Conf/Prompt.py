@@ -7,42 +7,35 @@ class JSHPrompt:
     current support for:
         printing time in  H:M:S format - %t
         printing CWD - %PWD
+        printing a space ' ' - %s
     """
 
 
     def __init__(self, prompt):
         self._prompt = prompt
 
-    def _checkTime(self, prompt):
+    def _checkKeyword(self, prompt, keyphrase, replace):
         """
-        checks for the time option in the prompt
-        %t. If found it will return a modified prompt
-        with the time in place of the %t
-        """
-        index = prompt.find("%t")
-        if(index != -1):
-            p = prompt.replace("%t",
-                    datetime.datetime.now().strftime("[%H:%M:%S]"))
-        else:
-            p = prompt
-        return p
+        Checks string passed in as prompt for a keyword, if
+        found it replaces the keyphrase with the replace
+        phrase.
 
-    def _checkPWD(self, prompt):
+        Prompt is the string you are searching through
+        keywphrase is the target to replace
+        replace is the prase to replace target with
         """
-        Checks for the pwd option in the prompt: %PWD
-        if it is found, this will return a modified prompt
-        with the wd in place of the %PWD
-        """
-        index = prompt.find("%PWD")
+        index = prompt.find(keyphrase)
         if(index != -1):
-            p = prompt.replace("%PWD", os.getcwd())
+            p = prompt.replace(keyphrase, replace)
         else:
             p = prompt
         return p
 
 
     def PrintPrompt(self):
-        p = self._checkTime(self._prompt)
-        p = self._checkPWD(p)
-        print(p, end=" ")
+        p = self._checkKeyword(self._prompt,
+                "%t",datetime.datetime.now().strftime("[%H:%M:%S]"))
+        p = self._checkKeyword(p, "%PWD", os.getcwd())
+        p = self._checkKeyword(p, "%s", " ")
+        print(p, end="")
 
