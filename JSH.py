@@ -1,7 +1,7 @@
 import os
 import shutil
 from Conf import Prompt
-from JSHUtil import Input
+from JSHUtil import Input, IORedirect
 from Conf import Configure as config
 
 class JSH:
@@ -10,8 +10,7 @@ class JSH:
         """
         Read in configuration file and configure jsh options
         """
-        #TODO: implement the .jshrc file
-        #dictonary to keep track of jshenv. Stored in .jshrc
+        #conf is a dictonary of values which can be modified in .jshrc
         conf = config.Configurer()
         self.var = conf.Configure() 
         self._prompt = Prompt.JSHPrompt(self.var["prompt"])
@@ -56,8 +55,9 @@ class JSH:
         if(None != execute):
 
             newpid = os.fork()
-            plen = len(pieces)
             if(0 == newpid):
+                IORedirect.IO_redirection(pieces)#setup IO redirection
+                plen = len(pieces)
                 if pieces[plen-1] == '&':
                     self._run_child(execute, pieces[0:plen-1]) # exclude the '&' to execute correctly
                 else:
