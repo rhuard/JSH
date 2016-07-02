@@ -17,12 +17,6 @@ class JSH:
         self._prompt = Prompt.JSHPrompt(self.var["prompt"])
         self._ih = Input.InputHandler()
 
-    def _run_child(self, cmd, args):
-        """
-        Exec the child process to run the given command
-        """
-        os.execv(cmd, args)
-
     def _searchPath(self, cmd):
         """
         Searches the PATH variable to the asked
