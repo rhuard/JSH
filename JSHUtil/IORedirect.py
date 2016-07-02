@@ -23,9 +23,6 @@ def SetUpInputRedirect(cmd):
 
 def SetUpOutputRedirect(cmd):
     i = cmd.index(">")
-    #so our file name must be i + 1
-    #os.close(1)#close the write fd
-    #os.open(cmd[i+1], os.O_WONLY)
     sys.stdout = open(cmd[i + 1], "w")
     del cmd[i + 1]
     del cmd[i]

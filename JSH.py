@@ -12,7 +12,7 @@ class JSH:
         """
         #conf is a dictonary of values which can be modified in .jshrc
         conf = config.Configurer()
-        self.var = conf.Configure() 
+        self.var = conf.Configure()
         self._prompt = Prompt.JSHPrompt(self.var["prompt"])
         self._ih = Input.InputHandler()
 
@@ -55,6 +55,7 @@ class JSH:
         if(None != execute):
 
             newpid = os.fork()
+            #Child
             if(0 == newpid):
                 IORedirect.IO_redirection(pieces)#setup IO redirection
                 plen = len(pieces)
@@ -62,6 +63,7 @@ class JSH:
                     self._run_child(execute, pieces[0:plen-1]) # exclude the '&' to execute correctly
                 else:
                     self._run_child(execute, pieces[0:])
+            #Parent
             else:
                 if pieces[len(pieces)-1] != '&':
                     cpid,s = os.wait()
@@ -74,9 +76,6 @@ class JSH:
                     os.chdir('/')
             else:
                 print("unknown command please try again")
-
-
-
 
     def Run(self):
         while(True):
