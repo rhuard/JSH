@@ -23,13 +23,6 @@ class JSH:
         """
         os.execv(cmd, args)
 
-    def _io_check(self, args_list):
-        """
-        Scans the given input for |, <, >, and >>
-        and sets up files accordingly
-        """
-        pass
-
     def _searchPath(self, cmd):
         """
         Searches the PATH variable to the asked
@@ -57,6 +50,7 @@ class JSH:
             else:
                 os.chdir('/')
         else:
+            #check for IO redirect
             subprocess.call(pieces)
 
 
