@@ -1,4 +1,5 @@
 import os
+import subprocess
 import shutil
 from Conf import Prompt
 from JSHUtil import Input, IORedirect
@@ -50,32 +51,14 @@ class JSH:
         is what is called by external files
         """
         pieces = self._ih.Process(cmd)
-        execute = self._searchPath(pieces[0])
-
-        if(None != execute):
-
-            newpid = os.fork()
-            #Child
-            if(0 == newpid):
-                IORedirect.IO_redirection(pieces)#setup IO redirection
-                plen = len(pieces)
-                if pieces[plen-1] == '&':
-                    self._run_child(execute, pieces[0:plen-1]) # exclude the '&' to execute correctly
-                else:
-                    self._run_child(execute, pieces[0:])
-            #Parent
+        if "cd" == pieces[0]:
+            if 1 < len(pieces):
+                os.chdir(pieces[1])
             else:
-                if pieces[len(pieces)-1] != '&':
-                    cpid,s = os.wait()
-                    self._PrintDeadChild(cpid, s)
+                os.chdir('/')
         else:
-            if("cd" == pieces[0]):
-                if len(pieces) > 1:
-                    os.chdir(pieces[1])
-                else:
-                    os.chdir('/')
-            else:
-                print("unknown command please try again")
+            subprocess.call(pieces)
+
 
     def Run(self):
         while(True):
