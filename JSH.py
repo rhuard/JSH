@@ -44,8 +44,20 @@ class JSH:
             else:
                 os.chdir('/')
         else:
+            stin = None
+            stout = None
+            sterr = None
             #check for IO redirect
-            subprocess.call(pieces)
+            redirect = IORedirect.IO_redirection(pieces)
+            #input redirection
+            if True == redirect[0]:
+                stin = open(redirect[3], "r")
+            if True == redirect[1]:
+                stout = open(redirect[4], "w")
+            if True == redirect[2]:
+                stout = open(redirect[5], "a")
+
+            subprocess.call(pieces, stdin = stin, stdout = stout)
 
 
     def Run(self):
