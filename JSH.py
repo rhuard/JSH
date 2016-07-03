@@ -1,7 +1,8 @@
 import os
+import subprocess
 import shutil
 from Conf import Prompt
-from JSHUtil import Input
+from JSHUtil import Input, IORedirect
 from Conf import Configure as config
 
 class JSH:
@@ -10,25 +11,11 @@ class JSH:
         """
         Read in configuration file and configure jsh options
         """
-        #TODO: implement the .jshrc file
-        #dictonary to keep track of jshenv. Stored in .jshrc
+        #conf is a dictonary of values which can be modified in .jshrc
         conf = config.Configurer()
-        self.var = conf.Configure() 
+        self.var = conf.Configure()
         self._prompt = Prompt.JSHPrompt(self.var["prompt"])
         self._ih = Input.InputHandler()
-
-    def _run_child(self, cmd, args):
-        """
-        Exec the child process to run the given command
-        """
-        os.execv(cmd, args)
-
-    def _io_check(self, args_list):
-        """
-        Scans the given input for |, <, >, and >>
-        and sets up files accordingly
-        """
-        pass
 
     def _searchPath(self, cmd):
         """
@@ -51,31 +38,26 @@ class JSH:
         is what is called by external files
         """
         pieces = self._ih.Process(cmd)
-        execute = self._searchPath(pieces[0])
-
-        if(None != execute):
-
-            newpid = os.fork()
-            plen = len(pieces)
-            if(0 == newpid):
-                if pieces[plen-1] == '&':
-                    self._run_child(execute, pieces[0:plen-1]) # exclude the '&' to execute correctly
-                else:
-                    self._run_child(execute, pieces[0:])
+        if "cd" == pieces[0]:
+            if 1 < len(pieces):
+                os.chdir(pieces[1])
             else:
-                if pieces[len(pieces)-1] != '&':
-                    cpid,s = os.wait()
-                    self._PrintDeadChild(cpid, s)
+                os.chdir('/')
         else:
-            if("cd" == pieces[0]):
-                if len(pieces) > 1:
-                    os.chdir(pieces[1])
-                else:
-                    os.chdir('/')
-            else:
-                print("unknown command please try again")
+            stin = None
+            stout = None
+            sterr = None
+            #check for IO redirect
+            redirect = IORedirect.IO_redirection(pieces)
+            #input redirection
+            if True == redirect[0]:
+                stin = open(redirect[3], "r")
+            if True == redirect[1]:
+                stout = open(redirect[4], "w")
+            if True == redirect[2]:
+                stout = open(redirect[5], "a")
 
-
+            subprocess.call(pieces, stdin = stin, stdout = stout)
 
 
     def Run(self):
