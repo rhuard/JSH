@@ -7,27 +7,36 @@ def IO_redirection(cmd):
     Redirect input/output based characters < > >> in the command.
     < will be redirecting input, > will be output and >> is output append
     """
+    infile = None
+    inputred = False
+    outfile = None
+    outred = False
+    appfile = None
+    appred = False
     #check for input redirection first
     if("<" in cmd):
-        SetUpInputRedirect(cmd)
+        infile, inputred = SetUpInputRedirect(cmd)
 
     if(">" in cmd):
-        SetUpOutputRedirect(cmd)
+        outfile, outred = SetUpOutputRedirect(cmd)
 
     if(">>" in cmd):
-        SetUpAppendRedirect(cmd)
+        appfile, appred = SetUpAppendRedirect(cmd)
+
+    return (inputred, outred, appred, infile, outfile, appfile)
 
 def SetUpInputRedirect(cmd):
-    import pdb; pdb.set_trace()
-    pass
+    return _find_redirect("<", cmd)
 
 def SetUpOutputRedirect(cmd):
-    i = cmd.index(">")
-    sys.stdout = open(cmd[i + 1], "w")
-    del cmd[i + 1]
-    del cmd[i]
-    print("this is a test")
+    return _find_redirect(">", cmd)
 
 def SetUpAppendRedirect(cmd):
-    import pdb; pdb.set_trace()
-    pass
+    return _find_redirect(">>", cmd)
+
+def _find_redirect(symbol, cmd):
+    i = cmd.index(symbol)
+    rfile = cmd[i + 1]
+    del cmd[i + 1]
+    del cmd[i]
+    return rfile, True
